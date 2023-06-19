@@ -2,14 +2,6 @@ import { cartsService } from "../dao/services/cart.service.js"
 
 
 
-export const getCarts = async (req, res) => {
-	try {
-	  const carts = await cartsService.getCarts();
-	  return res.send({ status: "success", payload: carts });
-	} catch (error) {
-	  console.log(error);
-	}
-  };
 
 export async function getCartById(req, res) {
 	const cartId = req.params.cid;

@@ -1,6 +1,8 @@
 import { productsService } from "../dao/services/product.service.js";
 import { cartsService } from "../dao/services/cart.service.js";
-
+import CustomError from "../dao/services/errors/CustomError.js";
+import EErrors from "../dao/services/errors/enum.js";
+import { generateProductErrorInfo } from "../dao/services/errors/info.js";
 export async function getProducts(req, res) {
 	const { limit, page, category, status, sort } = req.query;
 	const products = productsService.getProducts(
@@ -85,10 +87,16 @@ export async function addProduct(req, res) {
 	const files = req.files.splice(0, 4);
 
 	if (!product) {
-		return res.status(400).send({
-			status: "Error",
-			error: "Error, the product could no be added",
-		});
+		CustomError.createError({
+			name:EErrors.MISSING_INFORMATION,
+			cause:"Error, missing information",
+			code:1,
+			
+		})
+		//return res.status(400).send({
+			//status: "Error",
+			//error: "Error, the product could no be added",
+		//});
 	}
 
 	const result = await productsService.addProduct(product, files);
